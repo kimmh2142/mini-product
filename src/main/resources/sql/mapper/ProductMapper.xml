@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductMapper">
+
+    <insert id="insertProduct" parameterType="ProductModel">
+        INSERT
+        INTO Product
+        (
+            SELLER_ID,
+            PRODUCT_CATEGORY,
+            PRODUCT_NAME,
+            PRODUCT_PRICE,
+            PRODUCT_QUANTITY,
+
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        )
+        VALUES
+            (
+                #{sellerId},
+                #{productCategory},
+                #{productName},
+                #{productPrice},
+                #{productQuantity},
+
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectProducts" resultType="ProductModel" parameterType="ProductModel">
+        SELECT
+            PRODUCT_NO,
+            SELLER_ID,
+            PRODUCT_CATEGORY,
+            PRODUCT_NAME,
+            PRODUCT_PRICE,
+            PRODUCT_QUANTITY,
+            PRODUCT_VIEW_COUNT,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM Product
+    </select>
+
+    <select id="selectProduct" resultType="ProductModel" parameterType="ProductModel">
+        SELECT
+            PRODUCT_NO,
+            SELLER_ID,
+            PRODUCT_CATEGORY,
+            PRODUCT_NAME,
+            PRODUCT_PRICE,
+            PRODUCT_QUANTITY,
+            PRODUCT_VIEW_COUNT,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM Product
+        WHERE PRODUCT_NO = #{productNo}
+
+    </select>
+
+    <delete id="deleteProduct" parameterType="ProductModel">
+        DELETE FROM Product WHERE PRODUCT_NO = #{productNo}
+    </delete>
+
+    <update id="updateProduct" parameterType="ProductModel">
+        UPDATE Product SET
+        <if test='productCategory != null and productCategory != "" '>
+            PRODUCT_CATEGORY = #{productCategory},
+        </if>
+        <if test='productName != null and productName != "" '>
+            PRODUCT_NAME = #{productName},
+        </if>
+        <if test='productPrice != null and productPrice != "" '>
+            PRODUCT_PRICE = #{productPrice},
+        </if>
+        <if test='productQuantity != null and productQuantity != "" '>
+            PRODUCT_QUANTITY = #{productQuantity},
+        </if>
+        <if test='modifyId != null and modifyId != "" '>
+            MODIFY_ID = #{modifyId},
+        </if>
+        MODIFY_DATE = NOW()
+        WHERE PRODUCT_NO = #{productNo}
+    </update>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductOptionMapper">
+
+    <insert id="insertProductOption" parameterType="ProductOptionModel">
+        INSERT
+        INTO PRODUCT_OPTION
+        (
+            SORT_NO,
+            OPTION_NO,
+            PRODUCT_NO,
+            OPTION_KINDS,
+            OPTION_VALUE,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        )
+        VALUES
+            (
+                #{sortNo},
+                #{OptionNo},
+                #{productNo},
+                #{optionKinds},
+                #{optionValue},
+
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectProductOptions" resultType="ProductOptionModel" parameterType="ProductOptionModel">
+        SELECT
+            PRODUCT_OPTION_NO,
+            SORT_NO,
+            OPTION_NO,
+            PRODUCT_NO,
+            OPTION_KINDS,
+            OPTION_VALUE,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM PRODUCT_OPTION
+    </select>
+
+    <select id="selectProductOption" resultType="ProductOptionModel" parameterType="ProductOptionModel">
+        SELECT
+            PRODUCT_OPTION_NO,
+            SORT_NO,
+            OPTION_NO,
+            PRODUCT_NO,
+            OPTION_KINDS,
+            OPTION_VALUE,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM PRODUCT_OPTION
+        WHERE PRODUCT_OPTION_NO = #{productOptionNo}
+
+    </select>
+
+    <delete id="deleteProductOption" parameterType="ProductOptionModel">
+        DELETE FROM PRODUCT_OPTION WHERE PRODUCT_OPTION_NO = #{productOptionNo}
+    </delete>
+
+    <update id="updateProductOption" parameterType="ProductOptionModel">
+        UPDATE PRODUCT_OPTION SET
+        <if test='optionKinds != null and optionKinds != "" '>
+            OPTION_KINDS = #{optionKinds},
+        </if>
+        <if test='optionValue != null and optionValue != "" '>
+            OPTION_VALUE = #{optionValue},
+        </if>
+        <if test='modifyId != null and modifyId != "" '>
+            MODIFY_ID = #{modifyId},
+        </if>
+        MODIFY_DATE = NOW()
+        WHERE PRODUCT_OPTION_NO = #{productOptionNo}
+    </update>
+</mapper>

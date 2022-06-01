@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BasketMapper">
+
+    <insert id="insertBasket" parameterType="BasketModel">
+        INSERT
+        INTO Basket
+        (
+            BASKET_PRODUCT_OPTION_NO,
+            PRODUCT_NO,
+            USER_ID,
+            BASKET_PRODUCT_QUANTITY,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        )
+        VALUES
+            (
+                #{basketProductOptionNo},
+                #{productNo},
+                #{userId},
+                #{basketProductQuantity},
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectBaskets" resultType="BasketModel" parameterType="BasketModel">
+        SELECT
+            BASKET_NO,
+            BASKET_PRODUCT_OPTION_NO,
+            PRODUCT_NO,
+            USER_ID,
+            BASKET_PRODUCT_QUANTITY,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM Basket
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="selectBasket" resultType="BasketModel" parameterType="BasketModel">
+        SELECT
+            BASKET_NO,
+            BASKET_PRODUCT_OPTION_NO,
+            PRODUCT_NO,
+            USER_ID,
+            BASKET_PRODUCT_QUANTITY,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM Basket
+        WHERE BASKET_NO = #{basketNo}
+
+    </select>
+
+    <delete id="deleteBasket" parameterType="BasketModel">
+        DELETE FROM Basket WHERE BASKET_NO = #{basketNo}
+    </delete>
+
+    <update id="updateBasket" parameterType="BasketModel">
+        UPDATE Basket SET
+        <if test='basketProductOptionNo != null and basketProductOptionNo != "" '>
+            BASKET_PRODUCT_OPTION_NO = #{basketProductOptionNo},
+        </if>
+        <if test='basketProductQuantity != null and basketProductQuantity != "" '>
+            BASKET_PRODUCT_QUANTITY = #{basketProductQuantity},
+        </if>
+        <if test='modifyId != null and modifyId != "" '>
+            MODIFY_ID = #{modifyId},
+        </if>
+        MODIFY_DATE = NOW()
+        WHERE BASKET_NO = #{basketNo}
+    </update>
+</mapper>
